@@ -1,0 +1,16 @@
+
+# Python virtual environment
+.venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Local student data
+students.json
+
+# Environment variables and secrets
+.env
+
+# VS Code local settings
+.vscode/
