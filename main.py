@@ -2,22 +2,24 @@
 from student import Student
 from storage import load_students, save_students
 
-#=============================================
-#Some Tests
-# def validate_marks(marks: int) -> bool:
-#     return 40 <= marks <= 100
+
+def validate_marks(marks: float) -> bool:
+    """Check whether marks are within the valid range."""
+    return 0 <= marks <= 100
 
 
-# print(validate_marks(40)) #True
-# print(validate_marks(39)) #False
-# def calculate_average(marks: list[int]) -> float:
-#     if not marks:
-#         return 0.0
+def is_pass(marks: float) -> bool:
+    """Return True if marks are at least 40."""
+    return validate_marks(marks) and marks >= 40
 
-#     return sum(marks) / len(marks)
 
-#=============================================
-
+def validate_student(name: str, marks: list[float]) -> bool:
+    """Validate a student's name and three subject marks."""
+    return (
+        bool(name.strip())
+        and len(marks) == 3
+        and all(validate_marks(mark) for mark in marks)
+    )
 
 
 def get_marks() -> list[float]:
@@ -28,7 +30,7 @@ def get_marks() -> list[float]:
             try:
                 mark = float(input(f"Enter marks for subject {i + 1}: "))
 
-                if 0 <= mark <= 100:
+                if validate_marks(mark):
                     marks.append(mark)
                     break
 
@@ -40,6 +42,7 @@ def get_marks() -> list[float]:
     return marks
 
 
+
 def add_student(students: list[Student]) -> None:
     name = input("Enter student name: ").strip()
 
@@ -47,9 +50,16 @@ def add_student(students: list[Student]) -> None:
         print("Name cannot be empty.")
         return
 
-    students.append(Student(name, get_marks()))
+    marks = get_marks()
+
+    if not validate_student(name, marks):
+        print("Invalid student data.")
+        return
+
+    students.append(Student(name, marks))
     save_students(students)
     print("Student added successfully!")
+
 
 
 def view_students(students: list[Student]) -> None:
@@ -169,6 +179,18 @@ def main() -> None:
 # print(validate_marks(150))  # False
 # print(calculate_average([80, 90, 70]))
 # print(calculate_average([]))
+
+# print(validate_marks(85))  # True
+# print(validate_marks(-10))  # False
+# print(validate_marks(150))  # False
+
+# print(is_pass(75))  # True
+# print(is_pass(35))  # False
+
+# print(validate_student("Rahul", [80, 90, 70]))  # True
+# print(validate_student("", [80, 90, 70]))  # False
+# print(validate_student("Priya", [80, 90]))  # False
+# print(validate_student("Amit", [80, 120, 70]))  # False
 #Test runs
 
 
