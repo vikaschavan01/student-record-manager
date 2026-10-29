@@ -74,6 +74,10 @@ def view_students(students: list[Student]) -> None:
 def search_student(students: list[Student]) -> None:
     name = input("Enter name to search: ").strip().casefold()
 
+    if not name:
+        print("Please enter a name to search.")
+        return
+
     matches = [
         s for s in students if name in s.name.casefold()
     ]
@@ -131,6 +135,38 @@ def class_statistics(students: list[Student]) -> None:
     print(f"Top average: {top_student.calculate_average():.2f}")
 
 
+def data_quality_report(students: list[Student]) -> None:
+    if not students:
+        print("No student records available.")
+        return
+
+    valid_records = 0
+    invalid_records = 0
+    passed_students = 0
+    failed_students = 0
+
+    for student in students:
+        if not validate_student(student.name, student.marks):
+            invalid_records += 1
+            continue
+
+        valid_records += 1
+
+        # A student must pass all three subjects.
+        if all(is_pass(mark) for mark in student.marks):
+            passed_students += 1
+        else:
+            failed_students += 1
+
+    print("\n===== DATA QUALITY REPORT =====")
+    print("Total records:", len(students))
+    print("Valid records:", valid_records)
+    print("Invalid records:", invalid_records)
+    print("Students passed:", passed_students)
+    print("Students failed:", failed_students)
+
+
+
 def main() -> None:
     try:
         students = load_students()
@@ -147,10 +183,10 @@ def main() -> None:
         print("4. Update marks")
         print("5. Delete student")
         print("6. Class statistics")
-        print("7. Exit")
+        print("7. Data quality report")
+        print("8. Exit")
 
-        choice = input("Choose an option (1-7): ").strip()
-
+        choice = input("Choose an option (1-8): ").strip()
         try:
             if choice == "1":
                 add_student(students)
@@ -165,6 +201,8 @@ def main() -> None:
             elif choice == "6":
                 class_statistics(students)
             elif choice == "7":
+                data_quality_report(students)
+            elif choice == "8":
                 print("Goodbye!")
                 break
             else:
