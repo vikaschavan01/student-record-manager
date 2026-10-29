@@ -2,6 +2,23 @@
 from student import Student
 from storage import load_students, save_students
 
+#=============================================
+#Some Tests
+# def validate_marks(marks: int) -> bool:
+#     return 40 <= marks <= 100
+
+
+# print(validate_marks(40)) #True
+# print(validate_marks(39)) #False
+# def calculate_average(marks: list[int]) -> float:
+#     if not marks:
+#         return 0.0
+
+#     return sum(marks) / len(marks)
+
+#=============================================
+
+
 
 def get_marks() -> list[float]:
     marks = []
@@ -144,6 +161,15 @@ def main() -> None:
                 print("Invalid choice.")
         except (ValueError, OSError) as error:
             print("Operation failed:", error)
+
+
+#Test runs
+# print(validate_marks(85))   # True
+# print(validate_marks(-10))  # False
+# print(validate_marks(150))  # False
+# print(calculate_average([80, 90, 70]))
+# print(calculate_average([]))
+#Test runs
 
 
 if __name__ == "__main__":
